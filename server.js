@@ -11,7 +11,7 @@ app.use(cors({
 
 app.use(express.static('public'));
 
-const YOUR_DOMAIN = 'https://coddicollective.com'; // <-- fixed this!!
+const YOUR_DOMAIN = 'https://coddicollective.com';
 
 // Root route to handle requests
 app.get('/', (req, res) => {
@@ -43,4 +43,6 @@ app.get('/session-status', async (req, res) => {
   });
 });
 
-app.listen(4242, () => console.log('Running on port 4242'));
+// ⭐ FIXED PORT THING ⭐
+const PORT = process.env.PORT || 4242;
+app.listen(PORT, () => console.log(`Running on port ${PORT}`));
