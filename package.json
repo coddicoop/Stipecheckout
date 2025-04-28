@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "stripe": "^18.0.0"
+    "stripe": "^18.0.0",
+    "cors": "^2.8.5"
   }
 }
