@@ -1,18 +1,17 @@
-// This is your test secret API key.
 const stripe = require('stripe')('sk_test_51RIHtxCja8lmZne8cShjR3TA8VIUS5Q3bmbSc4fmBL62iZF0PwMwy5o4Wij0y0OHAUmYcXJttGSvfISUls0yYXSS00c1NtC2I4');
 const express = require('express');
-const cors = require('cors'); // <-- Added this line
+const cors = require('cors');
 const app = express();
 
 app.use(cors({
-  origin: 'https://coddicollective.com', // <-- Your front-end website
+  origin: 'https://coddicollective.com',
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(express.static('public'));
 
-const YOUR_DOMAIN = 'http://localhost:4242';
+const YOUR_DOMAIN = 'https://coddicollective.com'; // <-- fixed this!!
 
 // Root route to handle requests
 app.get('/', (req, res) => {
@@ -24,8 +23,7 @@ app.post('/create-checkout-session', async (req, res) => {
     ui_mode: 'embedded',
     line_items: [
       {
-        // Provide the exact Price ID (for example, price_1234) of the product you want to sell
-        price: '{{PRICE_ID}}',
+        price: '{{PRICE_ID}}', // Replace this later with your real price ID
         quantity: 1,
       },
     ],
@@ -33,7 +31,7 @@ app.post('/create-checkout-session', async (req, res) => {
     return_url: `${YOUR_DOMAIN}/return.html?session_id={CHECKOUT_SESSION_ID}`,
   });
 
-  res.send({clientSecret: session.client_secret});
+  res.send({ clientSecret: session.client_secret });
 });
 
 app.get('/session-status', async (req, res) => {
