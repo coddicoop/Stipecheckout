@@ -6,6 +6,11 @@ app.use(express.static('public'));
 
 const YOUR_DOMAIN = 'http://localhost:4242';
 
+// Root route to handle requests
+app.get('/', (req, res) => {
+  res.send('Welcome to Stripe Checkout!');
+});
+
 app.post('/create-checkout-session', async (req, res) => {
   const session = await stripe.checkout.sessions.create({
     ui_mode: 'embedded',
