@@ -13,36 +13,29 @@ app.use(express.static('public'));
 
 const YOUR_DOMAIN = 'https://coddicollective.com';
 
-// Root route to handle requests
 app.get('/', (req, res) => {
   res.send('Welcome to Stripe Checkout!');
 });
 
 app.post('/create-checkout-session', async (req, res) => {
-  const session = await stripe.checkout.sessions.create({
-    ui_mode: 'embedded',
-    line_items: [
-      {
-        price: 'si_SD451a3HdE5VjD', // <-- double-check this is your Subscription Price ID
-        quantity: 1,
-      },
-    ],
-    mode: 'subscription',
-    return_url: `${YOUR_DOMAIN}/success-html/?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${YOUR_DOMAIN}/cancel-html/`,
-  });
+  try {
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price: 'price_1XXXXX', // <--- PUT YOUR REAL PRICE ID HERE
+          quantity: 1,
+        },
+      ],
+      mode: 'subscription',
+      success_url: `${YOUR_DOMAIN}/success-html/?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${YOUR_DOMAIN}/cancel-html/`,
+    });
 
-  res.send({ clientSecret: session.client_secret });
+    res.json(session.id);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong creating the session.' });
+  }
 });
 
-app.get('/session-status', async (req, res) => {
-  const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-
-  res.send({
-    status: session.status,
-    customer_email: session.customer_details.email,
-  });
-});
-
-const PORT = process.env.PORT || 4242;
-app.listen(PORT, () => console.log(`Running on port ${PORT}`));
+app.listen(4242, () => console.log('Running on port 4242'));
