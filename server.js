@@ -1,7 +1,15 @@
 // This is your test secret API key.
 const stripe = require('stripe')('sk_test_51RIHtxCja8lmZne8cShjR3TA8VIUS5Q3bmbSc4fmBL62iZF0PwMwy5o4Wij0y0OHAUmYcXJttGSvfISUls0yYXSS00c1NtC2I4');
 const express = require('express');
+const cors = require('cors'); // <-- Added this line
 const app = express();
+
+app.use(cors({
+  origin: 'https://coddicollective.com', // <-- Your front-end website
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 app.use(express.static('public'));
 
 const YOUR_DOMAIN = 'http://localhost:4242';
