@@ -20,29 +20,7 @@ app.get('/', (req, res) => {
 
 app.post('/create-checkout-session', async (req, res) => {
   const session = await stripe.checkout.sessions.create({
-    ui_mode: 'embedded',
     line_items: [
       {
-        price: '{{PRICE_ID}}', // Replace this later with your real price ID
+        price: 'si_SD451a3HdE5VjD', // Updated with your actual Price ID here
         quantity: 1,
-      },
-    ],
-    mode: 'payment',
-    return_url: `${YOUR_DOMAIN}/return.html?session_id={CHECKOUT_SESSION_ID}`,
-  });
-
-  res.send({ clientSecret: session.client_secret });
-});
-
-app.get('/session-status', async (req, res) => {
-  const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-
-  res.send({
-    status: session.status,
-    customer_email: session.customer_details.email
-  });
-});
-
-// ⭐ FIXED PORT THING ⭐
-const PORT = process.env.PORT || 4242;
-app.listen(PORT, () => console.log(`Running on port ${PORT}`));
